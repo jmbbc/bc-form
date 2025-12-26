@@ -9,15 +9,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0f172a;
-      --panel: rgba(255,255,255,0.08);
-      --card: #0b1224;
-      --accent: #0ea5e9;
-      --accent-2: #22c55e;
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-      --border: rgba(255,255,255,0.12);
-      --shadow: 0 20px 80px rgba(0,0,0,0.35);
+      --bg: #fbf9ff; /* soft pastel background */
+      --panel: rgba(255,255,255,0.96);
+      --card: #ffffff;
+      --accent: #cfc7f8; /* muted lavender */
+      --accent-2: #ffd9e8; /* pale pink */
+      --text: #2f2c3a;
+      --muted: #8b8794;
+      --border: rgba(137,168,245,0.18);
+      --shadow: 0 10px 24px rgba(137,168,245,0.12);
     }
 
     * { box-sizing: border-box; }
@@ -27,148 +27,52 @@
       min-height: 100vh;
       font-family: 'Manrope', system-ui, -apple-system, sans-serif;
       color: var(--text);
-      background: radial-gradient(circle at 20% 20%, rgba(34,197,94,0.15), transparent 25%),
-                  radial-gradient(circle at 80% 0%, rgba(14,165,233,0.18), transparent 28%),
-                  radial-gradient(circle at 40% 80%, rgba(14,165,233,0.12), transparent 32%),
-                  #0b1220;
+      background: radial-gradient(circle at 20% 20%, rgba(246,183,210,0.18), transparent 25%),
+                  radial-gradient(circle at 80% 0%, rgba(207,199,248,0.12), transparent 30%),
+                  radial-gradient(circle at 40% 80%, rgba(255,214,165,0.10), transparent 32%),
+                  var(--bg);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 32px 16px 48px;
+      padding: 28px 16px 44px;
     }
 
-    .shell {
-      width: min(960px, 100%);
-    }
+    .shell { width: min(960px, 100%); }
 
-    .hero {
-      text-align: center;
-      margin-bottom: 22px;
-      display: grid;
-      gap: 14px;
-    }
+    .hero { text-align: center; margin-bottom: 22px; display: grid; gap: 14px; }
+    .hero h1 { margin: 0 0 4px; font-size: clamp(26px, 3vw, 32px); letter-spacing: -0.02em; }
+    .hero p { margin: 0; color: var(--muted); font-size: 15px; }
 
-    .hero h1 {
-      margin: 0 0 4px;
-      font-size: clamp(26px, 3vw, 32px);
-      letter-spacing: -0.02em;
-    }
+    .hero-img { position: relative; justify-self: center; width: min(720px,100%); border-radius: 16px; overflow: hidden; border: 1px solid rgba(137,168,245,0.16); box-shadow: 0 12px 30px rgba(137,168,245,0.08); background: #fff; }
+    .hero-img img { display: block; width: 100%; height: auto; filter: saturate(0.88) contrast(0.98) brightness(0.98); }
+    .hero-img::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, rgba(255,255,255,0.36), rgba(255,255,255,0.0)); border-radius: 16px; }
 
-    .hero p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 15px;
-    }
+    .panel { background: linear-gradient(145deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96)); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); padding: 20px; backdrop-filter: blur(4px); }
 
-    .hero-img {
-      justify-self: center;
-      width: min(720px, 100%);
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid rgba(137,168,245,0.35);
-      box-shadow: 0 18px 48px rgba(137,168,245,0.24);
-      background: #fff;
-    }
+    form { display: grid; gap: 14px; }
+    .notice { text-align:left; background:#fff; border:1px solid rgba(137,168,245,0.12); border-radius:12px; padding:14px; box-shadow:0 10px 20px rgba(137,168,245,0.06); color:var(--text); display:grid; gap:8px; }
+    .notice h3{ margin:0; font-size:16px; }
+    .notice p, .notice li { color:var(--text); line-height:1.55; }
 
-    .hero-img img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
+    .field { display:flex; flex-direction:column; gap:6px; }
+    .field label { font-weight:700; color:var(--text); }
 
-    .panel {
-      background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      box-shadow: var(--shadow);
-      padding: 22px 22px 18px;
-      backdrop-filter: blur(6px);
-    }
+    input[type=text], input[type=tel], input[type=number] { width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(137,168,245,0.12); background:rgba(255,255,255,0.98); color:var(--text); transition: border .12s ease, box-shadow .12s ease; outline:none; }
+    input:focus { border-color:var(--accent); box-shadow:0 0 0 6px rgba(207,199,248,0.12); transform:translateY(-1px); background:#fff; }
 
-    form {
-      display: grid;
-      gap: 14px;
-    }
+    .row { display:grid; gap:12px; }
+    @media (min-width:640px){ .row { grid-template-columns:repeat(2,1fr); } }
 
-    .notice {
-      text-align: left;
-      background: #ffffff;
-      border: 1px solid rgba(137,168,245,0.35);
-      border-radius: 14px;
-      padding: 16px 18px;
-      box-shadow: 0 12px 30px rgba(137,168,245,0.18);
-      color: #2f2c3a;
-      display: grid;
-      gap: 10px;
-    }
+    .muted { color:var(--muted); font-size:13px; margin-top:-2px; }
 
-    .notice h3 {
-      margin: 0;
-      font-size: 18px;
-      letter-spacing: -0.01em;
-    }
+    button { margin-top:6px; padding:12px 16px; font-size:16px; font-weight:700; border:none; border-radius:12px; color:#1f1d2a; background:linear-gradient(135deg,#cfc7f8,#ffd9e8 60%); box-shadow:0 8px 20px rgba(137,168,245,0.12); cursor:pointer; transition: transform .12s ease, box-shadow .12s ease; }
+    button:hover{ transform:translateY(-1px); box-shadow:0 10px 24px rgba(137,168,245,0.14); }
+    button:active{ transform:translateY(0) scale(.995); }
 
-    .notice p {
-      margin: 0;
-      color: #3c3a4a;
-      line-height: 1.55;
-    }
+    .message { margin-top:14px; font-weight:600; min-height:20px; color:var(--muted); }
 
-    .notice ul {
-      margin: 0 0 0 18px;
-      padding: 0;
-      color: #3c3a4a;
-      line-height: 1.55;
-    }
-
-    .notice strong { color: #1f1d2a; }
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .field label {
-      font-weight: 700;
-      color: #f1f5f9;
-      letter-spacing: -0.01em;
-    }
-      <div class="notice">
-        <h3>ASSALAMUALAIKUM WARAHMATULLAHI WABARAKATUH</h3>
-        <p>Pihak Jawatankuasa Pengurusan Bersama (JMB) dengan kerjasama Surau Al-Muhtadin, Banjaria Court merancang untuk menganjurkan satu program cuti sekolah khas untuk anak-anak komuniti Banjaria Court.</p>
-        <p>Program ini merupakan Program Cuti Sekolah Keluarga Besar Kami selama 3 hari, dikendalikan oleh Alfadir Ustaz Meor Abdullah. Program ini bertujuan mengisi masa lapang remaja dengan pengisian bermanfaat merangkumi kerohanian, sahsiah dan pembentukan jati diri.</p>
-        <p>Bagi ibu bapa yang berminat, sila hubungi Ustaz Meor Abdullah di nombor: <strong>________</strong></p>
-        <p><strong>⚠️ TEMPAT ADALAH TERHAD</strong></p>
-        <p><strong>OBJEKTIF PROGRAM</strong></p>
-        <ul>
-          <li>Memantapkan pengamalan Fardu Ain sebagai asas pembentukan jati diri remaja.</li>
-          <li>Membina kesedaran tentang bahaya gejala sosial dan pengaruh negatif.</li>
-          <li>Memberi pendedahan mengenai kesan buruk ketagihan gajet dan media sosial.</li>
-          <li>Menyedarkan kepentingan menjaga maruah diri dan fitrah.</li>
-          <li>Membentuk disiplin serta keyakinan diri melalui aktiviti fizikal dan asas pertahanan diri.</li>
-        </ul>
-        <p><strong>MAKLUMAT PROGRAM</strong><br>
-        Nama Program: Program Benteng Diri Remaja<br>
-        Tempoh: 3 Hari (5, 6 & 7 Januari 2026)<br>
-        Masa: 10.00 pagi – 1.00 tengah hari<br>
-        Tempat: Surau Al-Muhtadin, Banjaria Court<br>
-        Sasaran: Remaja berumur 11 – 17 tahun<br>
-        Penyertaan: Lelaki dan Perempuan</p>
-      </div>
-
-      --bg: #f7f2ff;
-      --panel: rgba(255,255,255,0.85);
-      --card: #ffffff;
-      --accent: #89a8f5;
-      --accent-2: #f6b7d2;
-      --text: #3c3a4a;
-      --muted: #706d80;
-      --border: rgba(137,168,245,0.35);
-      --shadow: 0 20px 60px rgba(137,168,245,0.22);
-      transition: border 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
-      outline: none;
-    }
-
+    .badge { display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:12px; background:rgba(209,205,248,0.24); color:var(--text); border:1px solid rgba(137,168,245,0.18); font-weight:600; margin-bottom:10px; }
+  </style>
     input:focus {
       border-color: var(--accent);
       box-shadow: 0 0 0 4px rgba(14,165,233,0.18);
