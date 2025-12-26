@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Temp Form</title>
+  <style>
+    body { font-family: system-ui, Arial; max-width: 760px; margin: 36px auto; padding: 0 16px; }
+    label { display:block; margin-top:12px; font-weight:600 }
+    input[type=text], input[type=tel], input[type=number] { width:100%; padding:8px; margin-top:6px; box-sizing:border-box }
+    .row { display:flex; gap:8px }
+    .row > div { flex:1 }
+    button { margin-top:16px; padding:10px 14px; font-size:16px }
+    .message { margin-top:14px }
+  </style>
+</head>
+<body>
+  <h1>Temp Form</h1>
+  <p>Fill the form below and it will be POSTed to your Make webhook URL. Replace the <code>WEBHOOK_URL</code> value in the script with your webhook.</p>
+
+  <form id="visitorForm">
+    <label for="nama">Nama :</label>
+    <input id="nama" name="nama" type="text" required />
+
+    <label for="unit">Unit :</label>
+    <input id="unit" name="unit" type="text" required />
+
+    <label for="phone">No telefon :</label>
+    <input id="phone" name="phone" type="tel" placeholder="e.g. 6012xxxxxxx" required />
+
+    <label>Jumlah anak :</label>
+    <div class="row">
+      <div>
+        <label for="lelaki">Lelaki :</label>
+        <input id="lelaki" name="lelaki" type="number" min="0" value="0" required />
+      </div>
+      <div>
+        <label for="perempuan">Perempuan :</label>
+        <input id="perempuan" name="perempuan" type="number" min="0" value="0" required />
+      </div>
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <div class="message" id="msg"></div>
+
+  <script>
+    // REPLACE this with the webhook URL from Make (Tools > Webhooks > Custom webhook)
+    const WEBHOOK_URL = 'REPLACE_WITH_YOUR_MAKE_WEBHOOK_URL';
+
+    const form = document.getElementById('visitorForm');
+    const msg = document.getElementById('msg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msg.textContent = '';
+
+      if (WEBHOOK_URL === 'REPLACE_WITH_YOUR_MAKE_WEBHOOK_URL') {
+        msg.style.color = 'darkred';
+        msg.textContent = 'Error: Please replace WEBHOOK_URL in the script with your Make webhook URL before using.';
+        return;
+      }
+
+      const payload = {
+        nama: document.getElementById('nama').value.trim(),
+        unit: document.getElementById('unit').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        anak_lelaki: Number(document.getElementById('lelaki').value) || 0,
+        anak_perempuan: Number(document.getElementById('perempuan').value) || 0,
+        submitted_at: new Date().toISOString()
+      };
+
+      try {
+        msg.style.color = 'black';
+        msg.textContent = 'Sending...';
+
+        const res = await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) throw new Error('Network response not ok: ' + res.status);
+
+        form.reset();
+        msg.style.color = 'green';
+        msg.textContent = 'Terima kasih! Borang telah dihantar.';
+      } catch (err) {
+        msg.style.color = 'darkred';
+        msg.textContent = 'Gagal menghantar data: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
