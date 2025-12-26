@@ -4,46 +4,209 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Temp Form</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: system-ui, Arial; max-width: 760px; margin: 36px auto; padding: 0 16px; }
-    label { display:block; margin-top:12px; font-weight:600 }
-    input[type=text], input[type=tel], input[type=number] { width:100%; padding:8px; margin-top:6px; box-sizing:border-box }
-    .row { display:flex; gap:8px }
-    .row > div { flex:1 }
-    button { margin-top:16px; padding:10px 14px; font-size:16px }
-    .message { margin-top:14px }
+    :root {
+      --bg: #0f172a;
+      --panel: rgba(255,255,255,0.08);
+      --card: #0b1224;
+      --accent: #0ea5e9;
+      --accent-2: #22c55e;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --border: rgba(255,255,255,0.12);
+      --shadow: 0 20px 80px rgba(0,0,0,0.35);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 20%, rgba(34,197,94,0.15), transparent 25%),
+                  radial-gradient(circle at 80% 0%, rgba(14,165,233,0.18), transparent 28%),
+                  radial-gradient(circle at 40% 80%, rgba(14,165,233,0.12), transparent 32%),
+                  #0b1220;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px 48px;
+    }
+
+    .shell {
+      width: min(960px, 100%);
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: clamp(26px, 3vw, 32px);
+      letter-spacing: -0.02em;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .panel {
+      background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 22px 22px 18px;
+      backdrop-filter: blur(6px);
+    }
+
+    form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-weight: 700;
+      color: #f1f5f9;
+      letter-spacing: -0.01em;
+    }
+
+    input[type=text],
+    input[type=tel],
+    input[type=number] {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      transition: border 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(14,165,233,0.18);
+      transform: translateY(-1px);
+    }
+
+    .row {
+      display: grid;
+      gap: 12px;
+    }
+
+    @media (min-width: 640px) {
+      .row { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: -2px;
+    }
+
+    button {
+      margin-top: 6px;
+      padding: 12px 16px;
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      color: #0b1220;
+      background: linear-gradient(135deg, var(--accent), #38bdf8 45%, #5eead4);
+      box-shadow: 0 14px 40px rgba(14,165,233,0.35);
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.15s ease, filter 0.12s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1.5px);
+      box-shadow: 0 16px 48px rgba(14,165,233,0.38);
+      filter: saturate(1.05);
+    }
+
+    button:active {
+      transform: translateY(0px) scale(0.995);
+    }
+
+    .message {
+      margin-top: 14px;
+      font-weight: 600;
+      min-height: 20px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      background: rgba(34,197,94,0.12);
+      color: #bbf7d0;
+      border: 1px solid rgba(34,197,94,0.3);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
-  <h1>Temp Form</h1>
-  <p>Fill the form below and it will be POSTed to your Make webhook URL. Replace the <code>WEBHOOK_URL</code> value in the script with your webhook.</p>
-
-  <form id="visitorForm">
-    <label for="nama">Nama :</label>
-    <input id="nama" name="nama" type="text" required />
-
-    <label for="unit">Unit :</label>
-    <input id="unit" name="unit" type="text" required />
-
-    <label for="phone">No telefon :</label>
-    <input id="phone" name="phone" type="tel" placeholder="e.g. 6012xxxxxxx" required />
-
-    <label>Jumlah anak :</label>
-    <div class="row">
-      <div>
-        <label for="lelaki">Lelaki :</label>
-        <input id="lelaki" name="lelaki" type="number" min="0" value="0" required />
-      </div>
-      <div>
-        <label for="perempuan">Perempuan :</label>
-        <input id="perempuan" name="perempuan" type="number" min="0" value="0" required />
-      </div>
+  <div class="shell">
+    <div class="hero">
+      <div class="badge">📋 Borang Kehadiran</div>
+      <h1>Catat maklumat ringkas dengan pantas</h1>
+      <p>Isi butiran di bawah. Data akan dihantar ke webhook yang anda tetapkan.</p>
     </div>
 
-    <button type="submit">Submit</button>
-  </form>
+    <div class="panel">
+      <form id="visitorForm">
+        <div class="field">
+          <label for="nama">Nama</label>
+          <input id="nama" name="nama" type="text" placeholder="Contoh: Ali Bin Abu" required />
+        </div>
 
-  <div class="message" id="msg"></div>
+        <div class="field">
+          <label for="unit">Unit</label>
+          <input id="unit" name="unit" type="text" placeholder="Contoh: A-12-05" required />
+        </div>
+
+        <div class="field">
+          <label for="phone">No telefon</label>
+          <input id="phone" name="phone" type="tel" placeholder="6012xxxxxxx" required />
+          <span class="muted">Gunakan format tanpa tanda +.</span>
+        </div>
+
+        <div class="field">
+          <label>Jumlah anak</label>
+          <div class="row">
+            <div class="field">
+              <label for="lelaki">Lelaki</label>
+              <input id="lelaki" name="lelaki" type="number" min="0" value="0" required />
+            </div>
+            <div class="field">
+              <label for="perempuan">Perempuan</label>
+              <input id="perempuan" name="perempuan" type="number" min="0" value="0" required />
+            </div>
+          </div>
+        </div>
+
+        <button type="submit">Hantar sekarang</button>
+        <div class="message" id="msg"></div>
+      </form>
+    </div>
+  </div>
 
   <script>
     // REPLACE this with the webhook URL from Make (Tools > Webhooks > Custom webhook)
@@ -84,7 +247,7 @@
         if (!res.ok) throw new Error('Network response not ok: ' + res.status);
 
         form.reset();
-        msg.style.color = 'green';
+        msg.style.color = '#4ade80';
         msg.textContent = 'Terima kasih! Borang telah dihantar.';
       } catch (err) {
         msg.style.color = 'darkred';
